@@ -6,9 +6,11 @@ var SALT_FACTOR = 10;
 var zombieSchema = mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    role:{type: String, required: true},
     createdAt: { type: Date, default: Date.now },
     displayName: { type: String, },
     bio: String
+    
 });
 
 
@@ -48,7 +50,7 @@ zombieSchema.methods.checkPassword = function(guess, done) {
 }
 
 zombieSchema.methods.name = function() {
-    return this.displayName || this.username;
+    return this.displayName || this.username || this.role;
 }
 
 var Zombie = mongoose.model("Zombie", zombieSchema);

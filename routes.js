@@ -2,16 +2,50 @@ var express = require("express");
 var Zombie = require("./models/zombie");
 var Equip = require("./models/equipment");
 
+var acl = require("express-acl");
+
 var passport = require("passport");
 
 var router = express.Router();
 
+
+
 router.use((req, res, next) => {
     res.locals.currentZombie = req.zombie;
+    
     res.locals.errors = req.flash("error");
     res.locals.infos = req.flash("info");
+    
+    if(req.zombie){
+        req.session.role = req.zombie.role;
+        res.locals.currentRole = req.zombie.role;
+        //res.locals.roleinv = defaultRole;
+    }
+    if(req.session.role==undefined){
+        acl.config({
+            baseUrl:"/",
+            defaultRole:"invitado"
+        });
+        
+    }else{
+        
+        acl.config({
+            baseUrl:"/",
+            
+            defaultRole: req.session.role 
+        });
+    }
+   
+    
+        //baseUrl:"/",
+       
+    
+    
+    
     next();
 });
+
+router.use(acl.authorize);
 
 router.get("/", (req, res, next) => {
     Zombie.find()
@@ -70,6 +104,7 @@ router.get("/signup", (req, res) => {
 router.post("/signup", (req, res, next) => {
     var username = req.body.username;
     var password = req.body.password;
+    var role = req.body.role;
 
     Zombie.findOne({ username: username }, (err, zombie) => {
         if (err) {
@@ -81,7 +116,8 @@ router.post("/signup", (req, res, next) => {
         }
         var newZombie = new Zombie({
             username: username,
-            password: password
+            password: password,
+            role: role 
         });
         newZombie.save(next);
         return res.redirect("/");
@@ -121,10 +157,11 @@ router.get("/edit", ensureAuthenticated, (req, res) => {
 })
 
 router.post("/edit", ensureAuthenticated, (req, res, next) => {
-    req.zombie.displayName = req.displayName;
+    req.zombie.displayName = req.body.displayName;
     req.zombie.bio = req.body.bio;
     req.zombie.save((err) => {
-        next(err); {
+        if(err) {
+            next(err);
             return;
         }
         req.flash("info", "Perfil actualizado!");

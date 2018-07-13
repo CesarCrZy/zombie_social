@@ -1,0 +1,94 @@
+[{
+    "group": "invitado",
+    "permissions": [
+        {
+            "resource": "/login",
+            "methods": ["GET","POST"],
+            "action": "allow"
+        },
+        {
+            "resource": "/edit",
+            "methods": ["GET","POST"],
+            "action":"allow"
+        },
+        {
+            "resource": "/logout",
+            "methods": ["GET","POST"],
+            "action": "allow"
+        }
+
+    ]
+}, 
+{
+    "group": "zombie_boss",
+    "permissions":[
+        {
+            "resource": "/equip",
+            "methods": ["GET","POST"],
+            "action": "allow"
+        },
+        {
+            "resource": "/Requip",
+            "methods": ["GET","POST"],
+            "action": "allow"
+        },
+        {
+            "resource": "/logout",
+            "methods": ["GET","POST"],
+            "action": "allow"
+        },
+        {
+            "resource": "/login",
+            "methods": ["GET","POST"],
+            "action": "allow"
+        },
+        {
+            "resource": "/signup",
+            "methods": ["GET","POST"],
+            "action": "allow"
+        }
+    ]
+},
+{
+    "group": "zombie_queen",
+    "permissions":[
+        {
+            "resource": "/equip",
+            "methods": ["GET","POST"],
+            "action": "allow"
+        },
+        {
+            "resource": "/login",
+            "methods": ["GET","POST"],
+            "action": "allow"
+        },
+        {
+            "resource": "/signup",
+            "methods": ["GET","POST"],
+            "action": "allow"
+        },
+        {
+            "resource": "/logout",
+            "methods": ["GET","POST"],
+            "action": "allow"
+        },
+        {
+            "resource": "/zombies/*",
+            "methods":["GET"],
+            "action": "allow"
+        }
+    ]
+},
+{
+    "group": "zombie_king",
+    "permissions":[
+        {
+            "resource": "/*",
+            "methods": ["GET","POST"],
+            "action": "allow"
+        }
+       
+    ]
+}]
+
+
